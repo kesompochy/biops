@@ -1,0 +1,16 @@
+[
+  {
+    "name": "provider1",
+    "current": true,
+    "type": "redash",
+    "url": "example.com",
+    "credential": "example"
+  },
+  {
+    "name": "provider2",
+    "current": false,
+    "type": "metabase",
+    "url": "example.com",
+    "credential": "example"
+  }
+]

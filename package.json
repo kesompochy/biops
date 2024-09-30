@@ -1,0 +1,16 @@
+{
+  "name": "biops",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.2",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "inquirer": "^11.1.0"
+  }
+}

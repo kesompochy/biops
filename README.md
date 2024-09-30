@@ -1,2 +1,3 @@
-# redashops
-Redash Ops tool
+# biops
+
+CLI tool for BI Operations
