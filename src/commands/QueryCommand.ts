@@ -73,7 +73,8 @@ queryCommand
     console.log(`Updated query ${id}!`);
     console.log("Diff:")
     console.log(generateDiffString(originalQuery, newQuery).join('\n'));
-    console.log(`Recovery command: ${generateRecoveryCommand(originalQuery, newQuery)}`);
+    console.log("Recovery command:")
+    console.log(generateRecoveryCommand(originalQuery, newQuery));
   });
 
   const generateRecoveryCommand = (originalQuery: Query, newQuery: Query): string => {
@@ -82,9 +83,9 @@ queryCommand
     
     if (originalQuery.sql !== newQuery.sql) {
       const escapedSql = originalQuery.sql
-        .replace(/\\/g, '\\\\')  // バックスラッシュをエスケープ
-        .replace(/"/g, '\\"')    // ダブルクォートをエスケープ
-        .replace(/\$/g, '\\$');  // $記号をエスケープ（シェルでの変数展開を防ぐ）
+        .replace(/\\/g, '\\\\')
+        .replace(/"/g, '\\"')
+        .replace(/\$/g, '\\$');
       options.push(`--query "${escapedSql}"`);
     }
     if (originalQuery.dataSource !== newQuery.dataSource) {
@@ -124,7 +125,7 @@ queryCommand
           diffs.push(`- ${JSON.stringify(originalQuery[key])}`);
           diffs.push(`+ ${JSON.stringify(newQuery[key])}`);
         }
-        diffs.push('');  // 空行を追加して各フィールドの diff を分離
+        diffs.push('');
       }
     }
   
