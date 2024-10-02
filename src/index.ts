@@ -1,3 +1,5 @@
+#!/usr/bin/env bun
+
 import { Command } from "commander";
 import { providerCommand } from "./commands/ProviderCommand";
 import { queryCommand } from "./commands/QueryCommand";
