@@ -1,6 +1,7 @@
 import { Command } from "commander";
 import { providerCommand } from "./commands/ProviderCommand";
 import { queryCommand } from "./commands/QueryCommand";
+import { datasourceCommand } from "./commands/DatasourceCommand";
 
 const program = new Command();
 program
@@ -10,5 +11,6 @@ program
 
 program.addCommand(queryCommand);
 program.addCommand(providerCommand);
+program.addCommand(datasourceCommand);
 
 program.parse(process.argv);

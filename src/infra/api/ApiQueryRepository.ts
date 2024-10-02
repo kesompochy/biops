@@ -8,13 +8,10 @@ export default class ApiQueryRepository implements QueryRepository {
   url: string;
   type: ProviderType;
   apiKey?: string;
-  listAll?: boolean;
-  constructor(type: ProviderType, url: string, apiKey?: string, all?: boolean) {
+  constructor(type: ProviderType, url: string, apiKey?: string) {
     this.url = url;
     this.type = type;
     this.apiKey = apiKey;
-    this.listAll = all;
-
   }
   get listQueries(): Record<ProviderType, (options?: QueryListOptions) => Promise<Query[]>> {
     return {

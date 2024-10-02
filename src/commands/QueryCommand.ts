@@ -39,7 +39,7 @@ queryCommand
     const providerLogic = new ProviderLogic(providerRepository);
     const currentProvider = await providerLogic.getCurrentProvider();
 
-    const queryRepository: QueryRepository = new ApiQueryRepository(currentProvider.type, currentProvider.url, currentProvider.credential, options.all);
+    const queryRepository: QueryRepository = new ApiQueryRepository(currentProvider.type, currentProvider.url, currentProvider.credential);
     const queryLogic = new QueryLogic(queryRepository, currentProvider.type);
     const queries: Query[] = await queryLogic.list(options);
     queries.map((query) => console.log(query.id));
