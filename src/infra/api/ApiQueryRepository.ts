@@ -72,14 +72,19 @@ const getRedashQueries = async (endpoint: string, apiKey: string, options?: Quer
     data_source_id: string;
   }
 
-  return allQueries.flat().filter(Boolean).map((query: RedashResponseQuery) => ({
+  const flattenQueries = allQueries.flat().filter(Boolean);
+  const resultQueries = flattenQueries.map((query: RedashResponseQuery) => ({
     sql: query.query || '',
     id: query.id || '',
     name: query.name || '',
     description: query.description || '',
     createdBy: query.user || '',
     dataSource: query.data_source_id || '',
-  }));
+  })).filter((query: Query) => {
+    return !options?.datasource || String(query.dataSource) === options.datasource;
+  });
+
+  return resultQueries;
 }
 
 
@@ -102,21 +107,30 @@ const updateRedashQuery = async (endpoint: string, apiKey: string, id: string, o
     description: originalQueryData.description || '',
     dataSource: originalQueryData.data_source_id || '',
   }
-  console.log(originalQuery);
 
   const newQuery = { ...originalQuery } as Query; // Deep copy
   if (options?.dataSource) {
     newQuery.dataSource = options.dataSource;
   }
-  if (options?.queryReplace) {
-    const originalString = options.queryReplace[0];
-    const newString = options.queryReplace[1];
-    if (!originalString || !newString) {
-      throw new Error("query-replace requires two arguments");
-    }
-    newQuery.sql = newQuery.sql.replace(originalString, newString);
+  if (options?.query && options.queryReplace) {
+    throw new Error("query and query-replace cannot be used together");
   }
-  console.log(newQuery);
+  if (options?.queryReplace) {
+    if (options.queryReplace.length % 2 !== 0) {
+      throw new Error("query-replace requires an even number of arguments");
+    }
+    for (let i = 0; i < options.queryReplace.length; i += 2) {
+      const originalString = options.queryReplace[i];
+      const newString = options.queryReplace[i + 1];
+      if (!originalString || !newString) {
+        throw new Error("query-replace arguments cannot be empty");
+      }
+      newQuery.sql = newQuery.sql.replace(new RegExp(originalString, 'g'), newString);
+    }
+  }
+  if (options?.query) {
+    newQuery.sql = options.query;
+  }
 
   interface RedashUpdateRequestBody {
     query?: string;
@@ -135,7 +149,6 @@ const updateRedashQuery = async (endpoint: string, apiKey: string, id: string, o
   }
 
   if (Object.keys(bodyData).length === 0) {
-    console.log("No changes");
     return [originalQuery, newQuery];
   }
 
