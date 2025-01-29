@@ -80,9 +80,7 @@ const getRedashQueries = async (endpoint: string, apiKey: string, options?: Quer
     description: query.description || '',
     createdBy: query.user || '',
     dataSource: query.data_source_id || '',
-  })).filter((query: Query) => {
-    return !options?.datasource || String(query.dataSource) === options.datasource;
-  });
+  }))
 
   return resultQueries;
 }
